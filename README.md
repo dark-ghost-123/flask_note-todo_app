@@ -3,7 +3,7 @@ Note &amp; Todo program written with Python flask.
 
 ** The program is under development **
 
-#features :
+features :
 1. add and remove note & todo
 2. Checkmark for Todos after it is done
 
