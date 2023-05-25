@@ -6,6 +6,8 @@ Note &amp; Todo program written with Python flask.
 features :
 1. add and remove note & todo
 2. Checkmark for Todos after it is done
+3. 
+---------------------------------------------------------
 
 Features that will be added in future updates :
 1. category
