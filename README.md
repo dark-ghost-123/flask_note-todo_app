@@ -10,8 +10,8 @@ features :
 ---------------------------------------------------------
 
 Features that will be added in future updates :
-1. category
-2. dark/light mode
+1. category             | (added)
+2. dark/light mode      | (in process)
 
 
 You tell me the next feature :)
