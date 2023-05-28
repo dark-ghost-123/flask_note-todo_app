@@ -15,3 +15,8 @@ Features that will be added in future updates :
 
 
 You tell me the next feature :)
+
+---------------------------------------------------------
+
+**1. pip install -r requirments
+**2. run app.py
