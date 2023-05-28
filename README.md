@@ -18,5 +18,6 @@ You tell me the next feature :)
 
 ---------------------------------------------------------
 
+for running app :
 1. pip install -r requirments
 2. run app.py
