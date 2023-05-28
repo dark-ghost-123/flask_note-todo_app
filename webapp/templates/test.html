@@ -1,0 +1,197 @@
+{% extends "base.html" %}
+
+
+
+
+{% block title %} Filter | {{cat}} {% endblock %}
+
+{% block body %}
+
+{% set t_cats = [] %}
+{% for todo in user.todos %}
+{% if todo.category not in t_cats %}
+    {{ t_cats.append(todo.category) }}
+{% endif %}
+{% endfor %}
+{% set n_cats = [] %}
+{% for note in user.notes %}
+{% if note.category not in n_cats %}
+    {{ n_cats.append(note.category) }}
+{% else %}
+    {{ noo }}
+{% endif %}
+{% endfor %}
+
+<div class="row">
+  <div class="d-grid gap-2 col-4 mx-auto">
+      <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#todomodal">New
+          Todo</button>
+  </div>
+  <div class="d-grid gap-2 col-4 mx-auto">
+      <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#notemodal">New
+          Note</button>
+  </div>
+</div>
+<br>
+
+
+<!--   note     -->
+
+
+<div class="modal fade" id="notemodal" tabindex="-1" aria-labelledby="notemodalLabel" data-bs-backdrop="static"
+  data-bs-keyboard="false" aria-hidden="true">
+  <div class="modal-dialog modal-lg .modal-fullscreen-xl-down">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h1 class="modal-title fs-5" id="notemodalLabel">New Note</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <form action="/add_note" method="POST">
+                  <div class="mb-3">
+                      <label for="title" class="col-form-label">Title</label>
+                      <input name="title" id="title" class="form-control">
+                      <label for="category" class="col-form-label">Category</label>
+                      <input name="category" id="category" class="form-control">
+                      <label for="note" class="col-form-label">Note:</label>
+                      <textarea class="form-control" name="note" id="note" rows="7"></textarea>
+                      <hr>
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <button type="submit" class="btn btn-primary">Save Note</button>
+                  </div>
+              </form>
+          </div>
+      </div>
+  </div>
+</div>
+
+<!--   todo     -->
+
+<div class="modal fade" id="todomodal" tabindex="-1" aria-labelledby="todomodalLabel" data-bs-backdrop="static"
+  data-bs-keyboard="false" aria-hidden="true">
+  <div class="modal-dialog modal-lg .modal-fullscreen-xl-down">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h1 class="modal-title fs-5" id="todomodalLabel">New Todo</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <form action="/add_todo" method="POST">
+                  <div class="mb-3">
+                      <label for="title" class="col-form-label">Title</label>
+                      <input name="title" id="title" class="form-control">
+                      <label for="category" class="col-form-label">Category</label>
+                      <input name="category" id="category" class="form-control">
+                      <hr>
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <button type="submit" class="btn btn-primary">Save Todo</button>
+                  </div>
+              </form>
+          </div>
+      </div>
+  </div>
+</div>
+
+<!-- body -->
+
+<div id="exTab2" class="container">
+  <ul class="nav nav-tabs nav-fill">
+    <li class="nav-item"><a href="#1" class="nav-link" data-toggle="tab">Todos</a>
+    </li>
+    <li class="nav-item"><a href="#2" class="nav-link" data-toggle="tab">Notes</a>
+    </li>
+  </ul>
+
+  <div class="tab-content ">
+    <div class="tab-pane" id="1">
+      <h1 align="center" class="py-2 border-top border-bottom border-success-subtle">Todos</h1>
+      <ul class="nav nav-tabs">
+        <h6 class="nav-link">Category :</h6>
+        <li class="nav-item">
+          <form action="/" method="post">
+            <button type="submit" class="nav-link">All</button>
+          </form>
+          {% for category in t_cats %}
+        <li class="nav-item">
+          <form action="/cat-filter/{{category}}" method="post" class="">
+            <button type="submit" class="nav-link">{{category}}</button>
+          </form>
+          {% endfor %}
+      </ul>
+      <ul class="list-group list-group-flush p-5" id="todos">
+        <div class="row">
+          {% for todo in user.todos %}
+          {% if todo.category == cat %}
+          <div class="col-8">
+            <h3><strong>{{todo.id}}: {{todo.title}}</strong></h3>
+            <h5><strong>category: {{ todo.category }}</strong></h5>
+            {% if todo.status==True %}
+            <p class="btn btn-outline-success"> {{todo.status}} </p>
+            {% else %}
+            <p class="btn btn-outline-danger"> {{todo.status}} </p>
+            {% endif %}
+            <small class="align-top btn btn-outline-dark">{{todo.date}}</small>
+          </div>
+          <div class="col-4 my-auto">
+            <div class="row">
+              <form action="/status_todo/{{todo.id}}" method="post" class="d-grid gap-2 col-5 mx-auto">
+                <button type="submit" class="btn btn-outline-dark btn-lg me-md-2">Status</button>
+              </form>
+              <form action="/delete_todo/{{todo.id}}" method="post" class="d-grid gap-2 col-5 mx-auto">
+                <button type="submit" class="btn btn-outline-danger btn-lg me-md-2">Delete</button>
+              </form>
+            </div>
+          </div>
+          <hr>
+          {% endif %}
+          {% endfor %}
+        </div>
+      </ul>
+    </div>
+    <div class="tab-pane" id="2">
+      <h1 align="center" class="py-2 border-top border-bottom border-success-subtle">Notes</h1>
+
+      <ul class="nav nav-tabs">
+        <h6 class="nav-link">Category :</h6>
+        <li class="nav-item">
+          <form action="/" method="post">
+            <button type="submit" class="nav-link">All</button>
+          </form>
+          {% for category in n_cats %}
+        <li class="nav-item">
+          <form action="/cat-filter/{{category}}" method="post">
+            <button type="submit" class="nav-link">{{category}}</button>
+          </form>
+          {% endfor %}
+      </ul>
+
+      <ul class="list-group list-group-flush p-5" id="notes">
+        <div class="row">
+          {% for note in user.notes %}
+          {% if note.category == cat %}
+          <div class="col-8">
+            <h3><strong>{{note.id}}: {{note.title}}</strong></h3>
+            {% for list in note.note.split("\n") %}
+            {% if list == "" %}
+            <p class="text-break">&nbsp; .</p>
+            {% else %}
+            <p class="text-break"> {{list}} </p>
+            {% endif %}
+            {% endfor %}
+            <small class="align-top btn btn-outline-dark">{{note.date}}</small>
+          </div>
+          <div class="col-4 my-auto">
+            <form action="/delete_note/{{note.id}}" method="post" class="d-grid gap-2 col-6 mx-auto">
+              <button type="submit" class="btn btn-danger btn-lg me-md-2">Delete</button>
+            </form>
+          </div>
+          <hr>
+          {% endif %}
+          {% endfor %}
+        </div>
+      </ul>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
