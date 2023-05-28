@@ -18,5 +18,5 @@ You tell me the next feature :)
 
 ---------------------------------------------------------
 
-**1. pip install -r requirments
-**2. run app.py
+1. pip install -r requirments
+2. run app.py
